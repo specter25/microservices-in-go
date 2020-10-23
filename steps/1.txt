@@ -1,0 +1,15 @@
+//step1 -- create a server
+//parameter one is the ip:port and the parameter 2 is the handler
+//now as we have specified nil in the http handler what it does is it creates a server and uses a default serve mux as the handler
+//step 2 create hhtp handler
+//what this function does is it creates a http handler and it attaches t to the defaukt servemux
+//step 3 create the goodye handler
+// now curl at goodbye and logs goodbye world
+//anything other than goodbys matches the first route thus it is a greedy matching
+// to read info from a req.body -- body is a ioRead enclosure i.e it implements the io.read interafce
+//step5
+//send the data as res.send
+//it implements io.Writer
+
+//step 6
+// handle errors
