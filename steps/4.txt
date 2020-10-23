@@ -1,0 +1,7 @@
+1) we will not update data 
+    - using PUT REQUEST 
+    - setup a demo post handler using the previos get workfow
+2)
+    - create a decoder of json on the PRoduct struct 
+    - now log the decoded data to the console to test whetehr it is being decoded or not
+    - create functions to add a product in the product list 

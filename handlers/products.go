@@ -22,6 +22,10 @@ func (p *Products) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	//handle an Update
+	if r.Method == http.MethodPost {
+		p.addProduct(rw, r)
+		return
+	}
 
 	rw.WriteHeader(http.StatusMethodNotAllowed)
 
@@ -44,4 +48,16 @@ func (p *Products) getProducts(rw http.ResponseWriter, r *http.Request) {
 	}
 	//we needed this in the forst approach not now
 	// rw.Write(d)
+}
+
+func (p *Products) addProduct(rw http.ResponseWriter, r *http.Request) {
+	p.l.Println("Handle Post Product")
+	//http req body is an ioreader
+	prod := &data.Product{}
+	err := prod.FromJSON(r.Body)
+	if err != nil {
+		http.Error(rw, "Unable to unmarshal json", http.StatusBadRequest)
+	}
+	data.AddProduct(prod)
+	p.l.Printf("Prod %#v", prod)
 }
