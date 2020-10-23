@@ -1,0 +1,23 @@
+Building restful services
+1) 
+    - It is a type of architecture (JSON over HTTP)
+    - use verb approach GET, POST, DELETE ,Put etc.
+    - Json is commonly used but it is not mandatory 
+2)  created the product struct in productapi/data/product.go
+3)  create a new hander products handler
+4)  change hello handler to product handler in main.go
+5)  define product list func in data/products.go
+6) call the function in the handler , encode it into json and  write it using rw.Write
+7)  use tags on the product struct to modify the output in the json format 
+
+8) Now instead of using Json.Marshall we will create a different json encoding logic using io.writer 
+    - because it is fast 
+    - 
+9) define a type inside the data/products.go for the []*Products so taht we can create a function on it instead of putting the logic inside the handler , i.e. just to make it clean
+
+
+10) make necessary changes in the handler
+
+11) that's writing Json , but how do we read Json
+
+12) create a new Function insidethe handler get Products and put all the code of servehttp func inside it
