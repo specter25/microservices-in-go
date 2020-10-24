@@ -1,3 +1,13 @@
 using gorilla to refactor the code 
 
 begin by refactoring the sevre mux in main.go
+
+
+router 
+subrouter 
+delete serve http func as it is not needed now 
+
+now creating the routing using the new subrouters for all 3 requests 
+
+just major change is the extraction process of the of the id variable in the update route , rest is just basic routing change
+
