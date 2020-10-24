@@ -5,3 +5,6 @@
     - create a decoder of json on the PRoduct struct 
     - now log the decoded data to the console to test whetehr it is being decoded or not
     - create functions to add a product in the product list 
+3)
+    - create the update route 
+    - 
