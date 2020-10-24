@@ -1,0 +1,3 @@
+using gorilla to refactor the code 
+
+begin by refactoring the sevre mux in main.go
