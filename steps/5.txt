@@ -11,3 +11,6 @@ now creating the routing using the new subrouters for all 3 requests
 
 just major change is the extraction process of the of the id variable in the update route , rest is just basic routing change
 
+middleware setup 
+app.use setup
+changes in the extraction of prod in add and update method

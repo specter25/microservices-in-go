@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -42,6 +43,14 @@ func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle Post Product")
 
 	prod := r.Context().Value(KeyProduct{}).(data.Product)
+
+	err := prod.Validate()
+	if err != nil {
+		p.l.Println("[ERROR] Json validation error", err)
+		http.Error(rw, fmt.Sprintf("ERROR] Json validation error %s", err), http.StatusBadRequest)
+		return
+	}
+
 	data.AddProduct(&prod)
 	p.l.Printf("Prod %#v", prod)
 }
@@ -58,6 +67,12 @@ func (p *Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle Post Product", id)
 
 	prod := r.Context().Value(KeyProduct{}).(data.Product)
+	err = prod.Validate()
+	if err != nil {
+		p.l.Println("[ERROR] Json validation error", err)
+		http.Error(rw, fmt.Sprintf("ERROR] Json validation error %s", err), http.StatusBadRequest)
+		return
+	}
 
 	err = data.UpdateProduct(id, &prod)
 	if err == data.ErrProductNotFound {
