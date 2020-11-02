@@ -1,0 +1,8 @@
+    - using swagger in the application to make the documnetation 
+    - separate all routes in different files 
+    -   write docs for all routes 
+    - define a productStruct just for the documantation 
+    - now render the documenation using the swagger.yaml using the redoc middleware and use file server in main.go to make a handler route for it 
+    - 
+
+

@@ -6,6 +6,11 @@ import (
 	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
+// swagger:route GET /products products listProducts
+// Returns a list of products
+// responses:
+// 		200: productResponses
+
 //GetProducts returns the products from the array
 func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	// make a get request to srev .http and return this product list

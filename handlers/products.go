@@ -21,6 +21,14 @@ import (
 	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
+//list of products returns in the response
+// swagger:response productResponse
+type productsResponse struct {
+	//All products in the system
+	// in:body
+	Body []data.Product
+}
+
 type Products struct {
 	l *log.Logger
 }
