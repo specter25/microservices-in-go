@@ -10,18 +10,46 @@ import (
 	"github.com/go-playground/validator"
 )
 
+// ErrProductNotFound is an error raised when a product can not be found in the database
+var ErrProductNotFound = fmt.Errorf("Product not found")
+
 //Product this is a mock product
+//swagger:model
 type Product struct {
-	ID          int     `json:"id"`
-	Name        string  `json:"name" validate:"required"`
-	Description string  `json:"description"`
-	Price       float32 `json:"price" validate:"gt=0"`
-	SKU         string  `json:"sku" validate:"required,sku"`
-	CreatedOn   string  `json:"-"` // we don;t want these fields to be visible in the output
-	UpdatedOn   string  `json:"-"`
-	DeletedOn   string  `json:"-"`
+	// the id of the user
+	//
+	// required: true
+	// min: 1
+	ID int `json:"id"`
+
+	// the name for this poduct
+	//
+	// required: true
+	// max length: 255
+
+	Name string `json:"name" validate:"required"`
+	// the description for this poduct
+	//
+	// required: false
+	// max length: 10000
+	Description string `json:"description"`
+	// the price for the product
+	//
+	// required: true
+	// min: 0.01
+	Price float32 `json:"price" validate:"gt=0"`
+
+	// the SKU for the product
+	//
+	// required: true
+	// pattern: [a-z]+-[a-z]+-[a-z]+
+	SKU       string `json:"sku" validate:"required,sku"`
+	CreatedOn string `json:"-"` // we don;t want these fields to be visible in the output
+	UpdatedOn string `json:"-"`
+	DeletedOn string `json:"-"`
 }
 
+//Validate validates the jspn data that we receive in the requests
 func (p *Product) Validate() error {
 	validate := validator.New()
 	validate.RegisterValidation("sku", validateSKU)
@@ -38,25 +66,31 @@ func validateSKU(fl validator.FieldLevel) bool {
 	return true
 }
 
-var ErrProductNotFound = fmt.Errorf("Product not found")
-
+//FromJSON parses the data that is recieved
 func (p *Product) FromJSON(r io.Reader) error {
 	e := json.NewDecoder(r)
 	return e.Decode(p)
 }
 
+// Products defines a slice of Product
 type Products []*Product
 
+//ToJSON stringifies data to be sent
 func (p *Products) ToJSON(w io.Writer) error {
 	e := json.NewEncoder(w)
 	return e.Encode(p)
 }
 
+// AddProduct adds a new product to the database
 func AddProduct(p *Product) {
 	p.ID = getNextID()
 	productList = append(productList, p)
 }
 
+// UpdateProduct replaces a product in the database with the given
+// item.
+// If a product with the given id does not exist in the database
+// this function returns a ProductNotFound error
 func UpdateProduct(id int, p *Product) error {
 	_, pos, err := findProduct(id)
 	if err != nil {
@@ -81,8 +115,33 @@ func getNextID() int {
 	return value
 }
 
+// GetProducts returns all products from the database
 func GetProducts() Products {
 	return productList
+}
+
+// DeleteProduct deletes a product from the database
+func DeleteProduct(id int) error {
+	i := findIndexByProductID(id)
+	if i == -1 {
+		return ErrProductNotFound
+	}
+
+	productList = append(productList[:i], productList[i+1])
+
+	return nil
+}
+
+// findIndex finds the index of a product in the database
+// returns -1 when no product can be found
+func findIndexByProductID(id int) int {
+	for i, p := range productList {
+		if p.ID == id {
+			return i
+		}
+	}
+
+	return -1
 }
 
 var productList = []*Product{

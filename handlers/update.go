@@ -10,7 +10,15 @@ import (
 	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
-//UpdateProducts updates the products based on data received
+// swagger:route PUT /products products updateProduct
+// Update a products details
+//
+// responses:
+//	201: noContentResponse
+//  404: errorResponse
+//  422: errorValidation
+
+// UpdateProducts handles PUT requests to update products
 func (p *Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 
 	//http req body is an ioreader

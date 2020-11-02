@@ -1,60 +1,32 @@
-// Package classification of Product API
-//
-// Documentation for Product API
-// Schemes : http
-// BasePath :/
-// Version :1.0.0
-//
-// Consumes:
-// - application/json
-// Produces:
-// - application/json
-// swagger:meta
-
 package handlers
 
 import (
-	"context"
+	"fmt"
 	"log"
-	"net/http"
-
-	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
-//list of products returns in the response
-// swagger:response productResponse
-type productsResponse struct {
-	//All products in the system
-	// in:body
-	Body []data.Product
-}
-
+// Products handler for getting and updating products
 type Products struct {
 	l *log.Logger
 }
 
+// NewProducts returns a new products handler with the given logger
 func NewProducts(l *log.Logger) *Products {
 	return &Products{l}
 }
 
+// KeyProduct is a key used for the Product object in the context
 type KeyProduct struct{}
 
-func (p Products) MiddlewareValidateProduct(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
-		prod := data.Product{}
+// ErrInvalidProductPath is an error message when the product path is not valid
+var ErrInvalidProductPath = fmt.Errorf("Invalid Path, path should be /products/[id]")
 
-		err := prod.FromJSON(r.Body)
-		if err != nil {
-			p.l.Println("[ERROR] deserializing product", err)
-			http.Error(rw, "Error reading product", http.StatusBadRequest)
-			return
-		}
+// GenericError is a generic error message returned by a server
+type GenericError struct {
+	Message string `json:"message"`
+}
 
-		// add the product to the context
-		ctx := context.WithValue(r.Context(), KeyProduct{}, prod)
-		r = r.WithContext(ctx)
-
-		// Call the next handler, which can be another middleware in the chain, or the final handler.
-		next.ServeHTTP(rw, r)
-	})
+// ValidationError is a collection of validation error messages
+type ValidationError struct {
+	Messages []string `json:"messages"`
 }
