@@ -1,10 +1,7 @@
 package data
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"regexp"
 	"time"
 
 	"github.com/go-playground/validator"
@@ -56,30 +53,8 @@ func (p *Product) Validate() error {
 	return validate.Struct(p)
 }
 
-func validateSKU(fl validator.FieldLevel) bool {
-	//sku is of format abc-absd-dsfdf
-	re := regexp.MustCompile(`[a-z]+-[a-z]+-[a-z]+`)
-	matches := re.FindAllString(fl.Field().String(), -1)
-	if len(matches) != 1 {
-		return false
-	}
-	return true
-}
-
-//FromJSON parses the data that is recieved
-func (p *Product) FromJSON(r io.Reader) error {
-	e := json.NewDecoder(r)
-	return e.Decode(p)
-}
-
 // Products defines a slice of Product
 type Products []*Product
-
-//ToJSON stringifies data to be sent
-func (p *Products) ToJSON(w io.Writer) error {
-	e := json.NewEncoder(w)
-	return e.Encode(p)
-}
 
 // AddProduct adds a new product to the database
 func AddProduct(p *Product) {
