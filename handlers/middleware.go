@@ -23,7 +23,6 @@ func (p *Products) MiddlewareValidateProduct(next http.Handler) http.Handler {
 			return
 		}
 
-		//validate the product
 		// errs := p.v.Validate(prod)
 		// if len(errs) != 0 {
 		// 	p.l.Println("[ERROR] validating product", errs)
