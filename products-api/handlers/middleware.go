@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/specter25/microservices-in-go/data"
+	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
 // MiddlewareValidateProduct validates the product in the request and calls next if ok

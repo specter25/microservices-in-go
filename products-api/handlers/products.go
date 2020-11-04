@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/specter25/microservices-in-go/data"
+	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
 // Products handler for getting and updating products

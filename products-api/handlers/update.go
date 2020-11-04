@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/specter25/microservices-in-go/data"
+	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
 // swagger:route PUT /products products updateProduct

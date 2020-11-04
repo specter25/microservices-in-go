@@ -8,40 +8,44 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/go-openapi/runtime/middleware"
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/hashicorp/go-hclog"
 	"github.com/specter25/microservices-in-go/handlers"
-	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
-func main() {
-	l := log.New(os.Stdout, "product-api", log.LstdFlags)
-	v := data.NewValidation()
+var bindAddress = env.String("BIND_ADDRESS", false, ":9090", "Bind address for the server")
+var logLevel = env.String("LOG_LEVEL", false, "debug", "Log output level for the server [debug, info, trace]")
+var basePath = env.String("BASE_PATH", false, "./imagestore", "Base path to save images")
 
-	ph := handlers.NewProducts(l, v)
+func main() {
+
+	env.Parse()
+
+	l := hclog.New(
+		&hclog.LoggerOptions{
+			Name:  "product-images",
+			Level: hclog.LevelFromString(*logLevel),
+		},
+	)
+
+	// create a logger for the server from the default logger
+	sl := l.StandardLogger(&hclog.StandardLoggerOptions{InferLevels: true})
+
+	// create the storage class, use local storage
+	// max filesize 5MB
+	stor, err := files.NewLocal(*basePath, 1024*1000*5)
+	if err != nil {
+		l.Error("Unable to create storage", "error", err)
+		os.Exit(1)
+	}
+
+	// create the handlers
+	fh := handlers.NewFiles(stor, l)
 
 	// gh := handlers.NewGoodbye(l)
 	//create a new swerve mux
 	sm := mux.NewRouter()
-
-	getRouter := sm.Methods(http.MethodGet).Subrouter()
-	getRouter.HandleFunc("/products", ph.GetProducts)
-
-	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	putRouter.HandleFunc("/{id:[0-9]+}", ph.UpdateProducts)
-	putRouter.Use(ph.MiddlewareValidateProduct)
-
-	postRouter := sm.Methods(http.MethodPost).Subrouter()
-	postRouter.HandleFunc("/", ph.AddProduct)
-	postRouter.Use(ph.MiddlewareValidateProduct)
-
-	opts := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
-	sh := middleware.Redoc(opts, nil)
-	getRouter.Handle("/docs", sh)
-
-	//we have to create a file server to serve the file that we want from a server
-	getRouter.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
 	// CORS
 	ch := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))

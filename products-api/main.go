@@ -11,8 +11,8 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/specter25/microservices-in-go/handlers"
-	"github.com/specter25/microservices-in-go/data"
+	"github.com/specter25/microservices-in-go/products-api/data"
+	"github.com/specter25/microservices-in-go/products-api/handlers"
 )
 
 func main() {
