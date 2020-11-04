@@ -3,16 +3,19 @@ package handlers
 import (
 	"fmt"
 	"log"
+
+	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
 // Products handler for getting and updating products
 type Products struct {
 	l *log.Logger
+	v *data.Validation
 }
 
 // NewProducts returns a new products handler with the given logger
-func NewProducts(l *log.Logger) *Products {
-	return &Products{l}
+func NewProducts(l *log.Logger, v *data.Validation) *Products {
+	return &Products{l, v}
 }
 
 // KeyProduct is a key used for the Product object in the context

@@ -11,11 +11,15 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 	"github.com/specter25/microservices-in-go/handlers"
+	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
 func main() {
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
-	ph := handlers.NewProducts(l)
+	v := data.NewValidation()
+
+	ph := handlers.NewProducts(l, v)
+
 	// gh := handlers.NewGoodbye(l)
 	//create a new swerve mux
 	sm := mux.NewRouter()

@@ -85,7 +85,7 @@ func (v *Validation) Validate(i interface{}) ValidationErrors {
 // validateSKU
 func validateSKU(fl validator.FieldLevel) bool {
 	// SKU must be in the format abc-abc-abc
-	re := regexp.MustCompile(`[a-z]+-[a-z]+-[a-z]+`)
+	re := regexp.MustCompile(`[1-9]+`)
 	sku := re.FindAllString(fl.Field().String(), -1)
 
 	if len(sku) == 1 {

@@ -3,8 +3,6 @@ package data
 import (
 	"fmt"
 	"time"
-
-	"github.com/go-playground/validator"
 )
 
 // ErrProductNotFound is an error raised when a product can not be found in the database
@@ -34,24 +32,24 @@ type Product struct {
 	//
 	// required: true
 	// min: 0.01
-	Price float32 `json:"price" validate:"gt=0"`
+	Price float32 `json:"price" validate:"required,gt=0"`
 
 	// the SKU for the product
 	//
 	// required: true
 	// pattern: [a-z]+-[a-z]+-[a-z]+
-	SKU       string `json:"sku" validate:"required,sku"`
+	SKU       string `json:"sku" validate:"sku"`
 	CreatedOn string `json:"-"` // we don;t want these fields to be visible in the output
 	UpdatedOn string `json:"-"`
 	DeletedOn string `json:"-"`
 }
 
-//Validate validates the jspn data that we receive in the requests
-func (p *Product) Validate() error {
-	validate := validator.New()
-	validate.RegisterValidation("sku", validateSKU)
-	return validate.Struct(p)
-}
+// //Validate validates the jspn data that we receive in the requests
+// func (p *Product) Validate() error {
+// 	validate := validator.New()
+// 	validate.RegisterValidation("sku", validateSKU)
+// 	return validate.Struct(p)
+// }
 
 // Products defines a slice of Product
 type Products []*Product

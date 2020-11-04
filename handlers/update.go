@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -22,7 +21,6 @@ import (
 func (p *Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 
 	//http req body is an ioreader
-
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -30,15 +28,12 @@ func (p *Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 	}
 	p.l.Println("Handle Post Product", id)
 
-	prod := r.Context().Value(KeyProduct{}).(data.Product)
-	err = prod.Validate()
-	if err != nil {
-		p.l.Println("[ERROR] Json validation error", err)
-		http.Error(rw, fmt.Sprintf("ERROR] Json validation error %s", err), http.StatusBadRequest)
-		return
-	}
+	rw.Header().Add("Content-Type", "application/json")
 
-	err = data.UpdateProduct(id, &prod)
+	prod := r.Context().Value(KeyProduct{}).(*data.Product)
+	p.l.Println("[DEBUG] updating record id", prod.ID)
+
+	err = data.UpdateProduct(id, prod)
 	if err == data.ErrProductNotFound {
 		http.Error(rw, "Product not found", http.StatusInternalServerError)
 		return
