@@ -52,6 +52,13 @@ func main() {
 	ph := sm.Get(http.MethodPost).Subrouter()
 	ph.HandleFunc("/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", fh.ServerHTTP)
 
+	//get file srevr
+	gh := sm.Get(http.MethodGet).Subrouter()
+	gh.Handle(
+		"/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}",
+		http.StripPrefix("/images/", http.FileServer(http.Dir(*basePath))),
+	)
+
 	// CORS
 	ch := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
 
