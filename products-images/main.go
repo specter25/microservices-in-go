@@ -11,7 +11,9 @@ import (
 	gohandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/hashicorp/go-hclog"
-	"github.com/specter25/microservices-in-go/handlers"
+	"github.com/nicholasjackson/env"
+	"github.com/specter25/microservices-in-go/products-images/files"
+	"github.com/specter25/microservices-in-go/products-images/handlers"
 )
 
 var bindAddress = env.String("BIND_ADDRESS", false, ":9090", "Bind address for the server")
@@ -46,6 +48,9 @@ func main() {
 	// gh := handlers.NewGoodbye(l)
 	//create a new swerve mux
 	sm := mux.NewRouter()
+
+	ph := sm.Get(http.MethodPost).Subrouter()
+	ph.HandleFunc("/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", fh.ServerHTTP)
 
 	// CORS
 	ch := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
