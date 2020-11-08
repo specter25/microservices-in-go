@@ -49,11 +49,11 @@ func main() {
 	//create a new swerve mux
 	sm := mux.NewRouter()
 
-	ph := sm.Get(http.MethodPost).Subrouter()
-	ph.HandleFunc("/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", fh.ServerHTTP)
+	ph := sm.Methods(http.MethodPost).Subrouter()
+	ph.HandleFunc("/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}", fh.ServeHTTP)
 
 	//get file srevr
-	gh := sm.Get(http.MethodGet).Subrouter()
+	gh := sm.Methods(http.MethodGet).Subrouter()
 	gh.Handle(
 		"/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}",
 		http.StripPrefix("/images/", http.FileServer(http.Dir(*basePath))),
@@ -84,7 +84,7 @@ func main() {
 
 	//now everything gets blocked here untill the message is received
 	sig := <-sigChan
-	l.Println("Received terminate , graceful shutdown", sig)
+	sl.Println("Received terminate , graceful shutdown", sig)
 	//This is very important to shutdown the server after it has received all the request
 
 	//shutdown needs a context
