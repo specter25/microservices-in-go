@@ -44,6 +44,7 @@ func main() {
 
 	// create the handlers
 	fh := handlers.NewFiles(stor, l)
+	mw := handlers.GzipHandler{}
 
 	// gh := handlers.NewGoodbye(l)
 	//create a new swerve mux
@@ -60,6 +61,7 @@ func main() {
 		"/images/{id:[0-9]+}/{filename:[a-zA-Z]+\\.[a-z]{3}}",
 		http.StripPrefix("/images/", http.FileServer(http.Dir(*basePath))),
 	)
+	gh.Use(mw.GzipMiddleware)
 
 	// CORS
 	ch := gohandlers.CORS(gohandlers.AllowedOrigins([]string{"*"}))
