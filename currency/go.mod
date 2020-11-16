@@ -1,4 +1,4 @@
-module github.com/specter25/microservices-in-go/products-api
+module github.com/specter25/microservices-in-go/currency-api
 
 go 1.12
 
@@ -9,9 +9,12 @@ require (
 	github.com/cncf/udpa/go v0.0.0-20201001150855-7e6fe0510fb5 // indirect
 	github.com/envoyproxy/go-control-plane v0.9.7 // indirect
 	github.com/envoyproxy/protoc-gen-validate v0.4.1 // indirect
+	github.com/fullstorydev/grpcurl v1.7.0 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
+	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.3 // indirect
 	github.com/google/pprof v0.0.0-20201109224723-20978b51388d // indirect
+	github.com/hashicorp/go-hclog v0.15.0
 	github.com/iancoleman/strcase v0.1.2 // indirect
 	github.com/lyft/protoc-gen-star v0.5.2 // indirect
 	github.com/pkg/sftp v1.12.0 // indirect
@@ -26,7 +29,9 @@ require (
 	golang.org/x/tools v0.0.0-20201113202037-1643af1435f3 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20201113130914-ce600e9a6f9e // indirect
+	google.golang.org/grpc v1.33.2
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.0.1 // indirect
+	google.golang.org/protobuf v1.25.0
 	gopkg.in/check.v1 v1.0.0-20200902074654-038fdea0a05b // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 )
