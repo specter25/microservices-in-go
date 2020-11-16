@@ -4,18 +4,20 @@ import (
 	"fmt"
 	"log"
 
+	protos "github.com/specter25/microservices-in-go/currency-api/protos/currency"
 	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
 // Products handler for getting and updating products
 type Products struct {
-	l *log.Logger
-	v *data.Validation
+	l  *log.Logger
+	v  *data.Validation
+	cc protos.CurrencyClient
 }
 
 // NewProducts returns a new products handler with the given logger
-func NewProducts(l *log.Logger, v *data.Validation) *Products {
-	return &Products{l, v}
+func NewProducts(l *log.Logger, v *data.Validation, cc protos.CurrencyClient) *Products {
+	return &Products{l, v, cc}
 }
 
 // KeyProduct is a key used for the Product object in the context

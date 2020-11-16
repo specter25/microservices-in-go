@@ -10,16 +10,30 @@ import (
 
 	"github.com/go-openapi/runtime/middleware"
 	gohandlers "github.com/gorilla/handlers"
+	protos "github.com/specter25/microservices-in-go/currency-api/protos/currency"
+	"google.golang.org/grpc"
+
 	"github.com/gorilla/mux"
 	"github.com/specter25/microservices-in-go/products-api/data"
 	"github.com/specter25/microservices-in-go/products-api/handlers"
 )
 
 func main() {
+
+	//create a currency client to the currency service
+
+	conn, err := grpc.Dial("localhost:9092", grpc.WithInsecure())
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+
+	cc := protos.NewCurrencyClient(conn)
+
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
 	v := data.NewValidation()
 
-	ph := handlers.NewProducts(l, v)
+	ph := handlers.NewProducts(l, v, cc)
 
 	// gh := handlers.NewGoodbye(l)
 	//create a new swerve mux
