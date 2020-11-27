@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime/middleware"
 	gohandlers "github.com/gorilla/handlers"
-	protos "github.com/specter25/microservices-in-go/currency-api/protos/currency"
+	protos "github.com/nicholasjackson/building-microservices-youtube/currency/protos/currency"
 	"google.golang.org/grpc"
 
 	"github.com/gorilla/mux"

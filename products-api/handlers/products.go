@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	protos "github.com/specter25/microservices-in-go/currency-api/protos/currency"
+	protos "github.com/nicholasjackson/building-microservices-youtube/currency/protos/currency"
 	"github.com/specter25/microservices-in-go/products-api/data"
 )
 
