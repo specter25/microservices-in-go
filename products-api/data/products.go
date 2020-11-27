@@ -117,6 +117,18 @@ func findIndexByProductID(id int) int {
 	return -1
 }
 
+// GetProductByID returns a single product which matches the id from the
+// database.
+// If a product is not found this function returns a ProductNotFound error
+func GetProductByID(id int) (*Product, error) {
+	i := findIndexByProductID(id)
+	if id == -1 {
+		return nil, ErrProductNotFound
+	}
+
+	return productList[i], nil
+}
+
 var productList = []*Product{
 	&Product{
 		ID:          1,

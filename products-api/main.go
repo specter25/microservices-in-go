@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime/middleware"
 	gohandlers "github.com/gorilla/handlers"
-	protos "github.com/nicholasjackson/building-microservices-youtube/currency/protos/currency"
+	protos "github.com/specter25/microservices-in-go/currency-api/protos/currency"
 	"google.golang.org/grpc"
 
 	"github.com/gorilla/mux"
@@ -50,6 +50,7 @@ func main() {
 	postRouter.HandleFunc("/", ph.AddProduct)
 	postRouter.Use(ph.MiddlewareValidateProduct)
 
+	//Redoc middleware used to render the swagger documentation properly study redoc documentation to understand this code
 	opts := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
 	sh := middleware.Redoc(opts, nil)
 	getRouter.Handle("/docs", sh)
