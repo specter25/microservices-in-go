@@ -15,7 +15,7 @@
 // swagger:meta
 package handlers
 
-import "github.com/specter25/microservices-in-go/products-api/data"
+import "github.com/PacktPublishing/Building-Microservices-with-Go-Second-Edition/product-api/8_validation/data"
 
 //
 // NOTE: Types defined here are purely for documentation purposes
@@ -67,7 +67,16 @@ type productParamsWrapper struct {
 	Body data.Product
 }
 
-// swagger:parameters updateProduct
+// swagger:parameters listProducts listSingleProduct
+type productQueryParam struct {
+	// Currency used when returning the price of the product,
+	// when not specified currency is returned in GBP.
+	// in: query
+	// required: false
+	Currency string
+}
+
+// swagger:parameters listSingleProduct deleteProduct
 type productIDParamsWrapper struct {
 	// The id of the product for which the operation relates
 	// in: path

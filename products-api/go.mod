@@ -3,6 +3,7 @@ module github.com/specter25/microservices-in-go/products-api
 go 1.12
 
 require (
+	github.com/PacktPublishing/Building-Microservices-with-Go-Second-Edition/product-api v0.0.0-20200205074745-5ec21a886558
 	github.com/go-openapi/runtime v0.19.23
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/gorilla/handlers v1.4.2

@@ -7,11 +7,11 @@ import (
 )
 
 // swagger:route GET /products products listProducts
-// Returns a list of products
+// Return a list of products from the database
 // responses:
-// 		200: productResponses
+//	200: productsResponse
 
-//GetProducts returns the products from the array
+// GetProducts handles GET requests and returns all current products
 func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	// make a get request to srev .http and return this product list
 	// we need ro look at a package known as encoding.json
