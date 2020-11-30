@@ -19,8 +19,9 @@ func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	//there are 2 ways to go about it
 	p.l.Debug("Get all records")
 	rw.Header().Add("Content-Type", "application/json")
+	cur := r.URL.Query().Get("currency")
 
-	prods, err := p.productDB.GetProducts("")
+	prods, err := p.productDB.GetProducts(cur)
 	if err != nil {
 		rw.WriteHeader(http.StatusInternalServerError)
 		data.ToJSON(&GenericError{Message: err.Error()}, rw)
@@ -51,10 +52,11 @@ func (p *Products) ListSingle(rw http.ResponseWriter, r *http.Request) {
 	rw.Header().Add("Content-Type", "application/json")
 
 	id := getProductID(r)
+	cur := r.URL.Query().Get("currency")
 
 	p.l.Debug("Get record id", id)
 
-	prod, err := p.productDB.GetProductByID(id, "")
+	prod, err := p.productDB.GetProductByID(id, cur)
 
 	switch err {
 	case nil:

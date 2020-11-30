@@ -44,7 +44,9 @@ func main() {
 	sm := mux.NewRouter()
 
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
+	getRouter.HandleFunc("/products", ph.GetProducts).Queries("currency", "{[A_Z]{3}}")
 	getRouter.HandleFunc("/products", ph.GetProducts)
+	getRouter.HandleFunc("/products/{id:[0-9]+}", ph.ListSingle).Queries("currency", "{[A_Z]{3}}")
 	getRouter.HandleFunc("/products/{id:[0-9]+}", ph.ListSingle)
 
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
