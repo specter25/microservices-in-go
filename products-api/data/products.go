@@ -68,7 +68,7 @@ func NewProductDB(c protos.CurrencyClient, l hclog.Logger) *ProductsDB {
 type Products []*Product
 
 // AddProduct adds a new product to the database
-func AddProduct(p *Product) {
+func (pr *ProductsDB) AddProduct(p *Product) {
 	p.ID = getNextID()
 	productList = append(productList, p)
 }

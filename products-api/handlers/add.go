@@ -18,10 +18,10 @@ import (
 
 //AddProduct adds the product received as JSON
 func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
-	p.l.Println("Handle Post Product")
+	p.l.Error("Handle Post Product")
 
 	prod := r.Context().Value(KeyProduct{}).(*data.Product)
 
-	data.AddProduct(prod)
-	p.l.Printf("Prod %#v", prod)
+	p.productDB.AddProduct(prod)
+	p.l.Debug("Prod %#v", prod)
 }

@@ -26,14 +26,14 @@ func (p *Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(rw, "Unable to convert to integer", http.StatusBadRequest)
 	}
-	p.l.Println("Handle Post Product", id)
+	p.l.Debug("Handle Post Product", id)
 
 	rw.Header().Add("Content-Type", "application/json")
 
 	prod := r.Context().Value(KeyProduct{}).(*data.Product)
-	p.l.Println("[DEBUG] updating record id", prod.ID)
+	p.l.Debug("[DEBUG] updating record id", prod.ID)
 
-	err = data.UpdateProduct(id, prod)
+	err = p.productDB.UpdateProduct(id, prod)
 	if err == data.ErrProductNotFound {
 		http.Error(rw, "Product not found", http.StatusInternalServerError)
 		return
@@ -42,5 +42,5 @@ func (p *Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "Product not found", http.StatusNotFound)
 		return
 	}
-	p.l.Printf("Prod %#v", prod)
+	p.l.Debug("Prod %#v", prod)
 }

@@ -2,11 +2,12 @@ package main
 
 import (
 	"context"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/hashicorp/go-hclog"
 
 	"github.com/go-openapi/runtime/middleware"
 	gohandlers "github.com/gorilla/handlers"
@@ -30,10 +31,13 @@ func main() {
 
 	cc := protos.NewCurrencyClient(conn)
 
-	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+	l := hclog.Default()
 	v := data.NewValidation()
 
-	ph := handlers.NewProducts(l, v, cc)
+	//create databse insatnce
+	db := data.NewProductDB(cc, l)
+
+	ph := handlers.NewProducts(l, v, db)
 
 	// gh := handlers.NewGoodbye(l)
 	//create a new swerve mux
@@ -65,6 +69,7 @@ func main() {
 	s := &http.Server{
 		Addr:         ":9090",
 		Handler:      ch(sm),
+		ErrorLog:     l.StandardLogger(&hclog.StandardLoggerOptions{}),
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
@@ -72,9 +77,12 @@ func main() {
 
 	// go func used so that it does not stop running
 	go func() {
+		l.Info("Starting server on port 9090")
+
 		err := s.ListenAndServe()
 		if err != nil {
-			log.Fatal(err)
+			l.Error("Error starting server", "error", err)
+			os.Exit(1)
 		}
 	}()
 
@@ -84,7 +92,7 @@ func main() {
 
 	//now everything gets blocked here untill the message is received
 	sig := <-sigChan
-	l.Println("Received terminate , graceful shutdown", sig)
+	l.Error("Received terminate , graceful shutdown", sig)
 	//This is very important to shutdown the server after it has received all the request
 
 	//shutdown needs a context
