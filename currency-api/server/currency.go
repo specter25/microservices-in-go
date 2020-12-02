@@ -34,7 +34,7 @@ func (c *Currency) SubscribeRates(src protos.Currency_SubscribeRatesServer) erro
 	go func() {
 		for {
 			rr, err := src.Recv()
-			if err != io.EOF {
+			if err == io.EOF {
 				c.log.Error("Client has closed connections")
 				break
 			}
@@ -42,7 +42,7 @@ func (c *Currency) SubscribeRates(src protos.Currency_SubscribeRatesServer) erro
 				c.log.Error("unable to read form client ", "error", err)
 				break
 			}
-			c.log.Info("handle client request", "request", rr)
+			c.log.Info("handle client request", "request_base", rr.GetBase(), "request_destination", rr.GetDestination())
 		}
 	}()
 
