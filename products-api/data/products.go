@@ -58,10 +58,35 @@ type Product struct {
 type ProductsDB struct {
 	currency protos.CurrencyClient
 	log      hclog.Logger
+	rates    map[string]float64
+	client   protos.Currency_SubscribeRatesClient
 }
 
 func NewProductDB(c protos.CurrencyClient, l hclog.Logger) *ProductsDB {
-	return &ProductsDB{c, l}
+	pb := &ProductsDB{c, l, make(map[string]float64), nil}
+	go pb.handleUpdates()
+	return pb
+}
+
+func (p *ProductsDB) handleUpdates() {
+	sub, err := p.currency.SubscribeRates(context.Background())
+	if err != nil {
+		p.log.Error("Unable to subscribe to rates", "error", err)
+
+	}
+
+	p.client = sub
+
+	for {
+		rr, err := sub.Recv()
+		p.log.Info("Received updated rate from srever", "dest", rr.GetDestination())
+		if err != nil {
+			p.log.Error("Error receiving message", "error", err)
+			return
+		}
+		p.rates[rr.Destination.String()] = rr.Rate
+
+	}
 }
 
 // Products defines a slice of Product
@@ -174,13 +199,24 @@ func (p *ProductsDB) GetProductByID(id int, currency string) (*Product, error) {
 
 func (p *ProductsDB) getRate(destination string) (float64, error) {
 
+	if r, ok := p.rates[destination]; ok {
+		return r, nil
+	}
+
 	rr := &protos.RateRequest{
 		Base:        protos.Currencies(protos.Currencies_value["EUR"]),
 		Destination: protos.Currencies(protos.Currencies_value[destination]),
 	}
 
+	//Get Initial Rate
 	resp, err := p.currency.GetRate(context.Background(), rr)
+	p.rates[destination] = resp.Rate
+
+	//Subscripbe for updates
+	p.client.Send(rr)
+
 	return resp.Rate, err
+
 }
 
 var productList = []*Product{

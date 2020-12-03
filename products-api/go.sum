@@ -464,6 +464,8 @@ github.com/specter25/microservices-in-go/currency-api v0.0.0-20201127133511-2b1b
 github.com/specter25/microservices-in-go/currency-api v0.0.0-20201127133511-2b1b6134275e/go.mod h1:nCYeTe08+SuiSCG8AfjXzLVLGeiy7cABvAYNDIV+B+Y=
 github.com/specter25/microservices-in-go/currency-api v0.0.0-20201130125704-524909da5927 h1:nwsN1+j0gQhXRZzkImWTjf7j3icPOFfIQr8LGC6nC/o=
 github.com/specter25/microservices-in-go/currency-api v0.0.0-20201130125704-524909da5927/go.mod h1:nCYeTe08+SuiSCG8AfjXzLVLGeiy7cABvAYNDIV+B+Y=
+github.com/specter25/microservices-in-go/currency-api v0.0.0-20201202140503-8a1115d06706 h1:jF7dB/PdntHskC1FQnAkutqjrpfeA7dcY2FZckv+iOg=
+github.com/specter25/microservices-in-go/currency-api v0.0.0-20201202140503-8a1115d06706/go.mod h1:nCYeTe08+SuiSCG8AfjXzLVLGeiy7cABvAYNDIV+B+Y=
 github.com/spf13/afero v1.1.2/go.mod h1:j4pytiNVoe2o6bmDsKpLACNPDBIoEAkihy7loJ1B0CQ=
 github.com/spf13/afero v1.3.3/go.mod h1:5KUK8ByomD5Ti5Artl0RtHeI5pTF7MIDuXL3yY520V4=
 github.com/spf13/afero v1.3.4/go.mod h1:Ai8FlHk4v/PARR026UzYexafAt9roJ7LcLMAmO6Z93I=
