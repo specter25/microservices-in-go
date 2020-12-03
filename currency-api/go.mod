@@ -28,7 +28,7 @@ require (
 	golang.org/x/sys v0.0.0-20201113233024-12cec1faf1ba // indirect
 	golang.org/x/tools v0.0.0-20201113202037-1643af1435f3 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20201113130914-ce600e9a6f9e // indirect
+	google.golang.org/genproto v0.0.0-20201113130914-ce600e9a6f9e
 	google.golang.org/grpc v1.33.2
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.0.1 // indirect
 	google.golang.org/protobuf v1.25.0
